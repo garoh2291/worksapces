@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import { ToastContainer } from "react-toastify";
+import { GlobalStyles } from "./componenets/styles/Global";
+import { StyledMain, StyledApp } from "./componenets/styles/App.styles";
+import bgImage from "./assets/grid.svg";
+import { RouteComponents } from "./routes";
+import "react-toastify/dist/ReactToastify.css";
+import { WorkspaceContextProvider } from "./context/provider";
+
+const theme = {
+  colors: {
+    header: "rgb(var(--tmdbDarkBlue))",
+    body: "#000",
+    body1: "rgba(217, 217, 217, 0.27)",
+    footer: "#003333",
+  },
+  mobile: "800px",
+  mobile2: "600px",
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <StyledMain bg={bgImage}>
+        <div></div>
+      </StyledMain>
+      <WorkspaceContextProvider>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <GlobalStyles />
+            <StyledApp>
+              <ToastContainer autoClose={1500} />
+              <RouteComponents />
+            </StyledApp>
+          </ThemeProvider>
+        </BrowserRouter>
+      </WorkspaceContextProvider>
+    </>
   );
 }
 
