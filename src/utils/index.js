@@ -14,3 +14,19 @@ export function useAuth() {
 
 export const addErrorIntoField = (errors) =>
   errors ? { error: true } : { error: false };
+
+export const generateQuery = (queryObj) => {
+  let query = "";
+
+  const queryArr = Array.from(Object.entries(queryObj));
+
+  console.log(queryArr);
+
+  queryArr.forEach((item) => {
+    if (item[1]) {
+      return (query += `${item[0]}=${item[1]}&`);
+    }
+  });
+
+  return query;
+};

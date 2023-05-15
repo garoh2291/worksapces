@@ -7,13 +7,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SPACE_SCHEMA } from "../../utils/yup";
 import { InputField } from "./InputField";
 import { SlugField } from "./SlugField";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addWorkspaceThunk,
   editSpaceThunk,
 } from "../../redux/slices/workspace";
 import { debounce } from "lodash";
 import { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const style = {
   position: "absolute",
@@ -45,6 +46,8 @@ export const SpaceModal = ({ editableSpace, onClose }) => {
     resolver: yupResolver(SPACE_SCHEMA),
   });
 
+  const { status } = useSelector((state) => state.workspace);
+  const buttonText = editableSpace ? "Change" : "Create";
   const dispatch = useDispatch();
 
   const handleCustomChange = async (e) => {
@@ -79,6 +82,12 @@ export const SpaceModal = ({ editableSpace, onClose }) => {
 
   const confirmGenerated = () => {
     setValue("slug", suggested.value);
+    setSuggested((prev) => {
+      return {
+        ...prev,
+        existed: false,
+      };
+    });
   };
 
   const onSubmit = (space) => {
@@ -135,7 +144,11 @@ export const SpaceModal = ({ editableSpace, onClose }) => {
             },
           }}
         >
-          {editableSpace ? "Change" : "Create"}
+          {status === "loading" ? (
+            <CircularProgress color="success" size={25} />
+          ) : (
+            buttonText
+          )}
         </Button>
       </Box>
     </Modal>

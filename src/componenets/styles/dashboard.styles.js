@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button } from "@mui/material";
 
 export const StyledDashboard = styled.div`
   width: 100%;
@@ -63,7 +64,6 @@ export const StyledBoard = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding-bottom: 40px;
 `;
 
 export const StyledNewCard = styled.div`
@@ -102,8 +102,8 @@ export const StyledCard = styled.div`
   height: 150px;
   border-radius: 8px;
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  -webkit-backdrop-filter: blur(8px); /* Safari 9+ */
-  backdrop-filter: blur(8px); /* Chrome and Opera */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   padding: 20px 10px;
   display: flex;
   flex-direction: column;
@@ -114,10 +114,6 @@ export const StyledCard = styled.div`
     font-size: 18px;
     line-height: 20px;
   }
-
-  /* &:hover ${StyledActions} {
-    display: flex;
-  } */
 `;
 
 export const StyledText = styled.p`
@@ -128,5 +124,43 @@ export const StyledText = styled.p`
     cursor: pointer;
     text-decoration: underline;
     color: green;
+  }
+`;
+
+export const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 40px;
+`;
+
+export const MoreButton = styled(Button)`
+  width: 250px;
+  background-color: #ea580c !important;
+`;
+
+export const StyledFilter = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 30px;
+`;
+
+export const FilterItem = styled.span`
+  position: relative;
+  color: #ea580c;
+  font-weight: 600;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    /*width: 100%;*/
+    width: ${({ value }) => value || "0%"};
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    margin-top: 5px;
+    background-color: #ea580c;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
   }
 `;

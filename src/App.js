@@ -1,12 +1,15 @@
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { ToastContainer } from "react-toastify";
-import { GlobalStyles } from "./componenets/styles/Global";
-import { StyledMain, StyledApp } from "./componenets/styles/App.styles";
-import bgImage from "./assets/grid.svg";
-import { RouteComponents } from "./routes";
+
 import "react-toastify/dist/ReactToastify.css";
+import { GlobalStyles } from "./componenets/styles/Global";
+
+import { StyledMain, StyledApp } from "./componenets/styles/App.styles";
+import { RouteComponents } from "./routes";
 import { WorkspaceContextProvider } from "./context/provider";
+
+import bgImage from "./assets/grid.svg";
 
 const theme = {
   colors: {

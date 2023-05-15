@@ -65,7 +65,7 @@ export const getWorkSpacesThunk = createAsyncThunk(
   async function ({ query, cb }, { rejectWithValue }) {
     try {
       const res = await fetch(
-        `http://localhost:3005/api/v1/workspaces?search=${query}`,
+        `http://localhost:3005/api/v1/workspaces?${query}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -141,6 +141,7 @@ export const deleteSpaceThunk = createAsyncThunk(
         throw new Error("Cant delete");
       }
 
+      onSucces("Workspace was deleted");
       dispatch(deleteSpace({ _id }));
     } catch (e) {
       console.log(e);
@@ -200,6 +201,7 @@ const workspaceSlice = createSlice({
     status: null,
     error: null,
     user: null,
+    pages: {},
   },
   reducers: {
     deleteSpace(state, action) {
@@ -245,14 +247,32 @@ const workspaceSlice = createSlice({
     [loginUserThunk.fulfilled]: (state, action) => {
       state.status = "resolved";
     },
+
+    [addWorkspaceThunk.rejected]: setError,
+    [addWorkspaceThunk.pending]: setLoader,
+    [addWorkspaceThunk.fulfilled]: (state, action) => {
+      state.status = "resolved";
+    },
+    [editSpaceThunk.rejected]: setError,
+    [editSpaceThunk.pending]: setLoader,
+    [editSpaceThunk.fulfilled]: (state) => {
+      state.status = "resolved";
+    },
     [getWorkSpacesThunk.rejected]: setError,
     [getWorkSpacesThunk.pending]: setLoader,
-
     [getWorkSpacesThunk.fulfilled]: (state, action) => {
-      const { data, user } = action.payload;
+      const { data, user, pagination } = action.payload;
       state.status = "resolved";
-      state.workspaces = data;
+
+      if (pagination.page === 1) {
+        state.workspaces = data;
+      } else {
+        console.log(state.workspaces);
+        console.log(data);
+        state.workspaces = [...state.workspaces, ...data];
+      }
       state.user = user;
+      state.pages = pagination;
     },
   },
 });

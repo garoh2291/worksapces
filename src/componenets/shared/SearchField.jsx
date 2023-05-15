@@ -5,10 +5,10 @@ import { WorkspaceContext } from "../../context";
 import { debounce } from "lodash";
 
 export const SearchField = () => {
-  const { setQuery } = useContext(WorkspaceContext);
+  const { changeSearch } = useContext(WorkspaceContext);
 
   const debouncedOnChange = debounce((newValue) => {
-    setQuery(newValue);
+    changeSearch("search", newValue);
   }, 300);
 
   const handleSearch = (e) => {

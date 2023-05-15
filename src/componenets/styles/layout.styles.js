@@ -11,10 +11,12 @@ export const StyledHeader = styled.div`
   justify-content: space-between;
   padding: 0 40px;
 
-  & > h6 {
+  & > a {
     font-size: 20px;
     background: -webkit-linear-gradient(#f59e0b, #ea580c, #eab308);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    font-weight: 600;
   }
 `;

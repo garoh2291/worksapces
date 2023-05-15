@@ -1,5 +1,5 @@
 import { Box, Button, Grid } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,8 +7,11 @@ import { REGISTER_SCHEMA } from "../../utils/yup";
 import { InputField } from "../shared/InputField";
 import { registerUserThunk } from "../../redux/slices/workspace";
 import { onSucces } from "../../utils/toaster";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const RegisterForm = () => {
+  const { status } = useSelector((state) => state.workspace);
+
   const {
     handleSubmit,
     formState: { errors },
@@ -34,7 +37,6 @@ export const RegisterForm = () => {
   const onSubmit = (data) => {
     delete data.confirmPassword;
     dispatch(registerUserThunk({ data, cb }));
-    // reset();
   };
 
   return (
@@ -85,7 +87,11 @@ export const RegisterForm = () => {
             },
           }}
         >
-          Sign up
+          {status === "loading" ? (
+            <CircularProgress color="success" size={25} />
+          ) : (
+            "Sign up"
+          )}
         </Button>
       </Box>
       <Grid item>

@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LOGIN_SCHEMA } from "../../utils/yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserThunk } from "../../redux/slices/workspace";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const LoginForm = () => {
+  const { status } = useSelector((state) => state.workspace);
   const {
     handleSubmit,
     control,
@@ -64,7 +66,11 @@ export const LoginForm = () => {
             },
           }}
         >
-          Sign up
+          {status === "loading" ? (
+            <CircularProgress color="success" size={25} />
+          ) : (
+            "Sign in"
+          )}
         </Button>
       </Box>
       <Grid sx={{ my: 2 }} item>
