@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { FilterItem } from "../styles/dashboard.styles";
 import { WorkspaceContext } from "../../context";
 

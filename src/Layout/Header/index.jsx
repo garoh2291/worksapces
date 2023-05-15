@@ -1,12 +1,14 @@
-import { LogoutWrapper } from "../../componenets/styles/dashboard.styles";
-import { StyledHeader } from "../../componenets/styles/layout.styles";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import {
+  LogoutWrapper,
+  StyledHeader,
+} from "../../componenets/styles/layout.styles";
 
 export const Header = ({ cb }) => {
   return (
     <StyledHeader>
-      <Link to={"/"}>WORKSPACE</Link>
+      <Link to={"/"}>WORKSPACES</Link>
 
       <LogoutWrapper onClick={cb}>
         Logout <LogoutIcon />

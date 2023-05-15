@@ -19,4 +19,18 @@ export const StyledHeader = styled.div`
     text-decoration: none;
     font-weight: 600;
   }
+
+  @media (max-width: ${({ theme }) => theme.tablet}) {
+    padding: 0 20px;
+  }
+`;
+
+export const LogoutWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: fit-content;
+  cursor: pointer;
+  color: #ea580c;
 `;

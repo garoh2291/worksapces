@@ -1,6 +1,6 @@
+import { useSelector } from "react-redux";
 import { StyledFilter } from "../styles/dashboard.styles";
 import { Option } from "./Option";
-import { useSelector } from "react-redux";
 
 export const Filter = () => {
   const { user } = useSelector((state) => state.workspace);

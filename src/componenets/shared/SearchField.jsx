@@ -1,8 +1,9 @@
+import { useContext } from "react";
+import { debounce } from "lodash";
+
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useContext } from "react";
 import { WorkspaceContext } from "../../context";
-import { debounce } from "lodash";
 
 export const SearchField = () => {
   const { changeSearch } = useContext(WorkspaceContext);

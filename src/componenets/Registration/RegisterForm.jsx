@@ -1,16 +1,18 @@
-import { Box, Button, Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link, useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Box, Button, Grid } from "@mui/material";
 import { REGISTER_SCHEMA } from "../../utils/yup";
 import { InputField } from "../shared/InputField";
 import { registerUserThunk } from "../../redux/slices/workspace";
 import { onSucces } from "../../utils/toaster";
-import CircularProgress from "@mui/material/CircularProgress";
 
 export const RegisterForm = () => {
   const { status } = useSelector((state) => state.workspace);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -25,9 +27,6 @@ export const RegisterForm = () => {
     },
     resolver: yupResolver(REGISTER_SCHEMA),
   });
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const cb = (message) => {
     onSucces(message);

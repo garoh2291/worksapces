@@ -1,4 +1,3 @@
-import React from "react";
 import { StyledText } from "../styles/dashboard.styles";
 
 export const SlugText = ({ available, suggested, confirmGenerated }) => {

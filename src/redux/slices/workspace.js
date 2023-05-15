@@ -1,4 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  addWorkspaceApi,
+  deleteWorkspaceApi,
+  editWorkspaceApi,
+  getWorkspaceApi,
+  loginUserApi,
+  registerUserApi,
+} from "../../utils/api";
 import { onError, onSucces } from "../../utils/toaster";
 
 export const registerUserThunk = createAsyncThunk(
@@ -6,16 +14,7 @@ export const registerUserThunk = createAsyncThunk(
 
   async function ({ data, cb }, { rejectWithValue }) {
     try {
-      const res = await fetch("http://localhost:3005/api/v1/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const answer = await res.json();
-
+      const answer = await registerUserApi(data);
       if (!answer.success) {
         onError(answer.message);
         throw new Error(answer.message);
@@ -33,18 +32,9 @@ export const loginUserThunk = createAsyncThunk(
   "loginUserThunk/workspace",
   async function ({ data, cb }, { rejectWithValue }) {
     try {
-      const res = await fetch("http://localhost:3005/api/v1/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const answer = await res.json();
+      const answer = await loginUserApi(data);
 
       if (!answer.success) {
-        console.log(answer);
         onError(answer.message);
         throw new Error(answer.message);
       }
@@ -64,20 +54,7 @@ export const getWorkSpacesThunk = createAsyncThunk(
 
   async function ({ query, cb }, { rejectWithValue }) {
     try {
-      const res = await fetch(
-        `http://localhost:3005/api/v1/workspaces?${query}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
-        }
-      );
-
-      const data = await res.json();
-
+      const data = await getWorkspaceApi(query);
       if (data.error && data.error.status === 401) {
         throw new Error("Not Authorized");
       }
@@ -95,17 +72,7 @@ export const addWorkspaceThunk = createAsyncThunk(
 
   async function ({ space, onClose }, { dispatch }) {
     try {
-      const res = await fetch("http://localhost:3005/api/v1/workspaces/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-        },
-        body: JSON.stringify(space),
-      });
-
-      const data = await res.json();
-
+      const data = await addWorkspaceApi(space);
       if (!data.success) {
         onError(data?.message);
         throw new Error(data?.error?.message);
@@ -124,18 +91,7 @@ export const deleteSpaceThunk = createAsyncThunk(
   "deleteSpaceThunk/workspace",
   async function ({ _id }, { dispatch }) {
     try {
-      const res = await fetch(
-        `http://localhost:3005/api/v1/workspaces/${_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
-        }
-      );
+      const res = await deleteWorkspaceApi(_id);
 
       if (!res.ok) {
         throw new Error("Cant delete");
@@ -154,22 +110,7 @@ export const editSpaceThunk = createAsyncThunk(
 
   async function ({ space, _id, onClose }, { dispatch }) {
     try {
-      const res = await fetch(
-        `http://localhost:3005/api/v1/workspaces/${_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
-          body: JSON.stringify(space),
-        }
-      );
-
-      const data = await res.json();
-
+      const data = await editWorkspaceApi(space, _id);
       if (!data.success) {
         onError(data?.message);
         throw new Error(data?.error?.message);
@@ -247,17 +188,6 @@ const workspaceSlice = createSlice({
     [loginUserThunk.fulfilled]: (state, action) => {
       state.status = "resolved";
     },
-
-    [addWorkspaceThunk.rejected]: setError,
-    [addWorkspaceThunk.pending]: setLoader,
-    [addWorkspaceThunk.fulfilled]: (state, action) => {
-      state.status = "resolved";
-    },
-    [editSpaceThunk.rejected]: setError,
-    [editSpaceThunk.pending]: setLoader,
-    [editSpaceThunk.fulfilled]: (state) => {
-      state.status = "resolved";
-    },
     [getWorkSpacesThunk.rejected]: setError,
     [getWorkSpacesThunk.pending]: setLoader,
     [getWorkSpacesThunk.fulfilled]: (state, action) => {
@@ -267,8 +197,6 @@ const workspaceSlice = createSlice({
       if (pagination.page === 1) {
         state.workspaces = data;
       } else {
-        console.log(state.workspaces);
-        console.log(data);
         state.workspaces = [...state.workspaces, ...data];
       }
       state.user = user;

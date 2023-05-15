@@ -20,8 +20,6 @@ export const generateQuery = (queryObj) => {
 
   const queryArr = Array.from(Object.entries(queryObj));
 
-  console.log(queryArr);
-
   queryArr.forEach((item) => {
     if (item[1]) {
       return (query += `${item[0]}=${item[1]}&`);

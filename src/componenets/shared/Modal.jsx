@@ -1,27 +1,28 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { debounce } from "lodash";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { SPACE_SCHEMA } from "../../utils/yup";
+import { SPACE_SCHEMA, slugcheck } from "../../utils/yup";
 import { InputField } from "./InputField";
 import { SlugField } from "./SlugField";
-import { useDispatch, useSelector } from "react-redux";
 import {
   addWorkspaceThunk,
   editSpaceThunk,
 } from "../../redux/slices/workspace";
-import { debounce } from "lodash";
-import { useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import { checkSlugApi } from "../../utils/api";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  maxWidth: 400,
+  width: "90%",
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -30,24 +31,22 @@ const style = {
 export const SpaceModal = ({ editableSpace, onClose }) => {
   const [suggested, setSuggested] = useState({
     value: "",
-    existed: "",
+    existed: false,
   });
-  const defaultValues = {
-    name: editableSpace?.name || "",
-    slug: editableSpace?.slug || "",
-  };
+
   const {
     handleSubmit,
     control,
     formState: { errors },
     setValue,
   } = useForm({
-    defaultValues,
+    defaultValues: {
+      name: editableSpace?.name || "",
+      slug: editableSpace?.slug || "",
+    },
     resolver: yupResolver(SPACE_SCHEMA),
   });
 
-  const { status } = useSelector((state) => state.workspace);
-  const buttonText = editableSpace ? "Change" : "Create";
   const dispatch = useDispatch();
 
   const handleCustomChange = async (e) => {
@@ -57,27 +56,26 @@ export const SpaceModal = ({ editableSpace, onClose }) => {
     debouncedOnChange(value);
   };
 
-  const debouncedOnChange = debounce((newValue) => {
-    fetch("http://localhost:3005/api/v1/workspaces/check-slug", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-      },
-      body: JSON.stringify({
-        slug: newValue,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setSuggested((prev) => {
-          return {
-            value: data.suggested || newValue,
-            existed: data.existed,
-          };
+  const debouncedOnChange = debounce(async (newValue) => {
+    if (slugcheck.test(newValue)) {
+      try {
+        const data = await checkSlugApi(newValue);
+
+        setSuggested({
+          value: data.suggested || newValue,
+          existed: data.existed,
         });
-      })
-      .catch((e) => console.log(e));
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      setSuggested((prev) => {
+        return {
+          value: "",
+          existed: false,
+        };
+      });
+    }
   }, 300);
 
   const confirmGenerated = () => {
@@ -95,6 +93,7 @@ export const SpaceModal = ({ editableSpace, onClose }) => {
       ? dispatch(addWorkspaceThunk({ space, onClose }))
       : dispatch(editSpaceThunk({ space, onClose, _id: editableSpace._id }));
   };
+
   return (
     <Modal
       open={true}
@@ -144,11 +143,7 @@ export const SpaceModal = ({ editableSpace, onClose }) => {
             },
           }}
         >
-          {status === "loading" ? (
-            <CircularProgress color="success" size={25} />
-          ) : (
-            buttonText
-          )}
+          {editableSpace ? "Change" : "Create"}
         </Button>
       </Box>
     </Modal>

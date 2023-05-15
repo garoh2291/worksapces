@@ -1,5 +1,5 @@
-import { FormControl, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
+import { FormControl, TextField } from "@mui/material";
 import { addErrorIntoField } from "../../utils";
 import ErrorMessage from "./Errors";
 import { SlugText } from "./SlugText";

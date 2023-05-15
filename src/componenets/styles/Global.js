@@ -12,8 +12,7 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     #root {
-        
-    line-height: inherit;
+        line-height: inherit;
         position:relative
     }
 `;

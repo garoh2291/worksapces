@@ -9,19 +9,10 @@ export const StyledDashboard = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
-`;
 
-export const LogoutWrapper = styled.div`
-  position: absolute;
-  right: 30px;
-  top: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  width: fit-content;
-  cursor: pointer;
-  color: #ea580c;
+  @media (max-width: ${({ theme }) => theme.tablet}) {
+    padding: 20px;
+  }
 `;
 
 export const StyledMain = styled.main`
@@ -48,6 +39,10 @@ export const Heading = styled.div`
       background: -webkit-linear-gradient(left, #f59e0b, #ea580c, #eab308);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+
+    @media (max-width: ${({ theme }) => theme.tablet}) {
+      font-size: 40px;
     }
   }
 
@@ -81,6 +76,10 @@ export const StyledNewCard = styled.div`
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5),
       0 4px 6px -4px rgb(0 0 0 / 0.3);
   }
+
+  @media (max-width: ${({ theme }) => theme.mobile}) {
+    width: 100%;
+  }
 `;
 
 export const StyledActions = styled.div`
@@ -92,8 +91,7 @@ export const StyledActions = styled.div`
   justify-content: flex-end;
   gap: 5px;
   left: 0;
-  bottom: 0;
-  /* display: none; */
+  top: 0;
   display: flex;
 `;
 
@@ -113,6 +111,17 @@ export const StyledCard = styled.div`
   & > h6 {
     font-size: 18px;
     line-height: 20px;
+    color: #ea580c;
+  }
+
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: ${({ theme }) => theme.mobile}) {
+    width: 100%;
   }
 `;
 
@@ -154,7 +163,6 @@ export const FilterItem = styled.span`
   &::after {
     content: "";
     position: absolute;
-    /*width: 100%;*/
     width: ${({ value }) => value || "0%"};
     height: 2px;
     bottom: -5px;
@@ -162,5 +170,18 @@ export const FilterItem = styled.span`
     margin-top: 5px;
     background-color: #ea580c;
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  }
+`;
+
+export const LoaderContainer = styled.div`
+  width: 100%;
+  height: 200px;
+  color: #ea580c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > h6 {
+    font-size: 25px;
   }
 `;

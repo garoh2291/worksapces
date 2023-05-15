@@ -1,12 +1,12 @@
 import { useCallback, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
+import { StyledDashboard } from "../../componenets/styles/dashboard.styles";
 import { generateQuery, removeToken } from "../../utils";
+import { WorkspaceContext } from "../../context";
 import { getWorkSpacesThunk } from "../../redux/slices/workspace";
 import { Loader } from "../../componenets/shared/Loader";
-import { WorkspaceContext } from "../../context";
 import { Header } from "../../Layout/Header";
-import { StyledDashboard } from "../../componenets/styles/dashboard.styles";
 
 export const DashboardPage = () => {
   const { workspaces } = useSelector((state) => state.workspace);

@@ -1,5 +1,5 @@
-import { StyledNewCard } from "../styles/dashboard.styles";
 import AddIcon from "@mui/icons-material/Add";
+import { StyledNewCard } from "../styles/dashboard.styles";
 
 export const NewCard = ({ handleOpen }) => {
   return (

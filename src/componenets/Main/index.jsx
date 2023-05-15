@@ -1,4 +1,7 @@
 import { useContext } from "react";
+import { useSelector } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import {
   ButtonWrapper,
   Heading,
@@ -8,9 +11,7 @@ import {
 import { CardBoard } from "./CardBoard";
 import { SearchField } from "../shared/SearchField";
 import { WorkspaceContext } from "../../context";
-import { useSelector } from "react-redux";
 import { Filter } from "../shared/Filter";
-import CircularProgress from "@mui/material/CircularProgress";
 
 export const Main = () => {
   const { queryObject, changePage } = useContext(WorkspaceContext);
@@ -18,7 +19,9 @@ export const Main = () => {
     pages: { page, pages },
     status,
   } = useSelector((state) => state.workspace);
+
   const lastPage = page === pages || pages === 0;
+
   return (
     <StyledMain>
       <Heading>

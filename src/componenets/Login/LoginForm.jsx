@@ -1,15 +1,18 @@
-import { Box, Button, Grid } from "@mui/material";
-import { InputField } from "../shared/InputField";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LOGIN_SCHEMA } from "../../utils/yup";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUserThunk } from "../../redux/slices/workspace";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Box, Button, Grid } from "@mui/material";
+import { InputField } from "../shared/InputField";
+import { LOGIN_SCHEMA } from "../../utils/yup";
+import { loginUserThunk } from "../../redux/slices/workspace";
 
 export const LoginForm = () => {
   const { status } = useSelector((state) => state.workspace);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const {
     handleSubmit,
     control,
@@ -21,9 +24,6 @@ export const LoginForm = () => {
     },
     resolver: yupResolver(LOGIN_SCHEMA),
   });
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const cb = () => {
     navigate("/");
