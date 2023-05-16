@@ -12,6 +12,7 @@ export const StyledDashboard = styled.div`
 
   @media (max-width: ${({ theme }) => theme.tablet}) {
     padding: 20px;
+    height: auto;
   }
 `;
 
