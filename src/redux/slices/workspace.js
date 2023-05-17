@@ -191,16 +191,18 @@ const workspaceSlice = createSlice({
     [getWorkSpacesThunk.rejected]: setError,
     [getWorkSpacesThunk.pending]: setLoader,
     [getWorkSpacesThunk.fulfilled]: (state, action) => {
-      const { data, user, pagination } = action.payload;
       state.status = "resolved";
 
-      if (pagination.page === 1) {
-        state.workspaces = data;
-      } else {
-        state.workspaces = [...state.workspaces, ...data];
+      if (action.payload) {
+        const { data, user, pagination } = action.payload;
+        if (pagination.page === 1) {
+          state.workspaces = data;
+        } else {
+          state.workspaces = [...state.workspaces, ...data];
+        }
+        state.user = user;
+        state.pages = pagination;
       }
-      state.user = user;
-      state.pages = pagination;
     },
   },
 });
